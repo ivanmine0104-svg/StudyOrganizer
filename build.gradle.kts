@@ -43,4 +43,6 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
+    // Google Generative AI (API de Gemini)
+    implementation("com.google.ai.client.generativeai:generativeai:0.2.0")
 }
