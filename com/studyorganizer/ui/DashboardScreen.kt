@@ -28,13 +28,16 @@ data class DailySessionUi(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
+    viewModel: DashboardViewModel = DashboardViewModel(),
     onUploadClick: () -> Unit = {},
     onEditTempScheduleClick: () -> Unit = {}
 ) {
+    val aiRecommendation by viewModel.aiRecommendation.collectAsState()
+
     // Sesiones sugeridas por el algoritmo de priorización
     val todaySessions = listOf(
-        DailySessionUi("6:00 PM - 8:00 PM", "Matemáticas", "Tarea vence mañana (Urgencia Máxima)", Color(0xFFE57373)),
-        DailySessionUi("9:00 PM - 10:00 PM", "Física", "Repaso por promedio de nota bajo (55%)", Color(0xFF81C784))
+        DailySessionUi("6:00 PM - 8:00 PM", "Matemáticas", "Tarea"),
+        DailySessionUi("9:00 PM - 10:00 PM", "Física", "Repaso po")
     )
 
     Scaffold(
@@ -60,8 +63,46 @@ fun DashboardScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            
+            // --- AQUÍ AGREGAMOS LA TARJETA DE LA IA ---
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                    )
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "Recomendación de Gemini",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Text(
+                            text = aiRecommendation, // Muestra el estado en tiempo real
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+                }
+            }
+
+            // --- AQUÍ AGREGAMOS EL BOTÓN PARA ACTIVAR EL ANÁLISIS ---
+            item {
+                Button(
+                    onClick = { 
+                        viewModel.analyzeTasksWithAI("Analizar mis tareas y pendientes de estudio") 
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Generar recomendación con IA")
+                }
+            }
+
+            // Aquí abajo ya puedes dejar los demás elementos o listas que tengas en tu LazyColumn
+        }
             // Ajuste temporal de horario
             item {
                 Card(
