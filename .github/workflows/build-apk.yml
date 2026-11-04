@@ -17,7 +17,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Gradle Wrapper if missing
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Generate Wrapper if missing
         run: |
           if [ ! -f ./gradlew ]; then
             gradle wrapper
