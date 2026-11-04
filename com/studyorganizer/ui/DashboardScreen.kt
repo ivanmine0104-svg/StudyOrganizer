@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,8 +37,8 @@ fun DashboardScreen(
 
     // Sesiones sugeridas por el algoritmo de priorización
     val todaySessions = listOf(
-        DailySessionUi("6:00 PM - 8:00 PM", "Matemáticas", "Tarea"),
-        DailySessionUi("9:00 PM - 10:00 PM", "Física", "Repaso po")
+        DailySessionUi("6:00 PM - 8:00 PM", "Matemáticas", "Tarea", Color.Blue),
+        DailySessionUi("9:00 PM - 10:00 PM", "Física", "Repaso", Color.Magenta)
     )
 
     Scaffold(
@@ -63,9 +64,9 @@ fun DashboardScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            
-            // --- AQUÍ AGREGAMOS LA TARJETA DE LA IA ---
+            // --- TARJETA DE LA IA ---
             item {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -81,7 +82,7 @@ fun DashboardScreen(
                         )
                         Spacer(modifier = Modifier.height(6.dp))
                         Text(
-                            text = aiRecommendation, // Muestra el estado en tiempo real
+                            text = aiRecommendation,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
@@ -89,7 +90,7 @@ fun DashboardScreen(
                 }
             }
 
-            // --- AQUÍ AGREGAMOS EL BOTÓN PARA ACTIVAR EL ANÁLISIS ---
+            // --- BOTÓN PARA ACTIVAR EL ANÁLISIS ---
             item {
                 Button(
                     onClick = { 
@@ -101,9 +102,7 @@ fun DashboardScreen(
                 }
             }
 
-            // Aquí abajo ya puedes dejar los demás elementos o listas que tengas en tu LazyColumn
-        }
-            // Ajuste temporal de horario
+            // --- AJUSTE TEMPORAL DE HORARIO ---
             item {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -137,6 +136,7 @@ fun DashboardScreen(
                 }
             }
 
+            // --- TÍTULO DE ITINERARIO ---
             item {
                 Text(
                     text = "Tu Itinerario Sugerido",
@@ -145,6 +145,7 @@ fun DashboardScreen(
                 )
             }
 
+            // --- LISTA DE SESIONES ---
             items(todaySessions) { session ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
